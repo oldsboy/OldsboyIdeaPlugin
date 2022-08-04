@@ -1,0 +1,40 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.oldsboy.OldsboyIdeaPlugin</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>OldsboyIdeaPlugin</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="oldsboy@hotmail.com" url="https://oldsboy@hotmail.com">oldsboy</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description>oldsboy使用的idea插件-----------------------------------------</description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.oldsboy.ideaplugin.State"/>
+    </extensions>
+    
+    <actions>
+        <group id="group1" text="自定义工具包">
+            <add-to-group group-id="MainMenu" />
+
+            <action id="create_hello_world" class="com.oldsboy.ideaplugin.action.Action_CreateHelloWorld" text="生成helloWorld" description="生成helloWorld" />
+            <action id="read_file" class="com.oldsboy.ideaplugin.action.Action_ReadFile" text="读取文件" description="读取文件" />
+            <action id="storage_test" class="com.oldsboy.ideaplugin.action.Action_StorageTest" text="存储测试" description="存储测试" />
+        </group>
+        <action id="get_url" class="com.oldsboy.ideaplugin.action.Action_GetUrl" text="获取到页面内所有请求" description="获取到页面内所有请求">
+            <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="ReplaceInPath"/>
+        </action>
+    </actions>
+</idea-plugin>
