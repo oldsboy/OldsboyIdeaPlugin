@@ -32,6 +32,7 @@
             <action id="create_hello_world" class="com.oldsboy.ideaplugin.action.Action_CreateHelloWorld" text="生成helloWorld" description="生成helloWorld" />
             <action id="read_file" class="com.oldsboy.ideaplugin.action.Action_ReadFile" text="读取文件" description="读取文件" />
             <action id="storage_test" class="com.oldsboy.ideaplugin.action.Action_StorageTest" text="存储测试" description="存储测试" />
+            <action id="get_url_menu" class="com.oldsboy.ideaplugin.action.Action_GetUrl" text="获取到页面内所有请求" description="获取到页面内所有请求" />
         </group>
         <action id="get_url" class="com.oldsboy.ideaplugin.action.Action_GetUrl" text="获取到页面内所有请求" description="获取到页面内所有请求">
             <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="ReplaceInPath"/>

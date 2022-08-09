@@ -1,6 +1,5 @@
 package com.oldsboy.ideaplugin.action;
 
-import com.google.gson.Gson;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -14,6 +13,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import com.oldsboy.ideaplugin.State;
+import com.oldsboy.ideaplugin.panel.Panel_UrlListDialog;
 import com.oldsboy.ideaplugin.util.StringUtil;
 
 import java.io.*;
@@ -29,7 +29,10 @@ public class Action_GetUrl extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         //  获取到当前编辑的文件
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        if (psiFile == null || psiFile.getVirtualFile() == null) return;
+        if (psiFile == null || psiFile.getVirtualFile() == null) {
+            Messages.showMessageDialog("未获取到正在编辑的文件", "tips", Messages.getErrorIcon());
+            return;
+        }
 
         List<String> show_list = getRegexListFromFile(psiFile.getVirtualFile(), State.getInstance().getState().getBlack_list());
 
@@ -37,18 +40,27 @@ public class Action_GetUrl extends AnAction {
     }
 
     private void showListDialog(AnActionEvent e, List<String> show_list) {
-        DialogBuilder builder = new DialogBuilder(e.getProject());
-        builder.setTitle("展示页面内的url:");
+        DialogBuilder dialog = new DialogBuilder(e.getProject());
+        dialog.setTitle("选择需要生成的URL");
+        dialog.resizable(true);
 
-        JBPanel<JBPanel> jbPanelJBPanel = new JBPanel<>();
-        // TODO: 2022/8/3 将展示更详细的url列表,增加对url的curd操作,具体有:删除多余的url, 修改黑名单列表, 创造更好看的界面
+        List<String> regex_list = State.getInstance().getState().getRegex_list();
+        Panel_UrlListDialog panel = new Panel_UrlListDialog(e, show_list, regex_list);
+        panel.setOnConfigListener(new Panel_UrlListDialog.OnConfigListener() {
+            @Override
+            public void onDelete(List<String> result) {
+                State.getInstance().getState().setRegex_list(result);
+            }
 
-        JBLabel jbLabel = new JBLabel(new Gson().toJson(show_list));
-        jbPanelJBPanel.add(jbLabel);
+            @Override
+            public void onAdd(List<String> result) {
+                State.getInstance().getState().setRegex_list(result);
+            }
+        });
+        dialog.setCenterPanel(panel.container);
 
-        builder.setCenterPanel(jbPanelJBPanel);
-        builder.setOkOperation(new Create_Http_From_List(e, builder, show_list));
-        builder.show();
+        dialog.setOkOperation(new Create_Http_From_List(e, dialog, panel));
+        dialog.show();
     }
 
     /** @description 从文件中获取正则的字符串
@@ -98,18 +110,21 @@ public class Action_GetUrl extends AnAction {
         return show_list;
     }
 
+    /** @description 根据传入的url_list生成http文件
+     * @author oldsboy; @date 2022-08-04 11:49 */
     class Create_Http_From_List implements Runnable{
-        private List<String> show_list;
+        private Panel_UrlListDialog panel;
         private  AnActionEvent e;
         private DialogBuilder builder;
-        public Create_Http_From_List(AnActionEvent e, DialogBuilder builder, List<String> show_list) {
+        public Create_Http_From_List(AnActionEvent e, DialogBuilder builder, Panel_UrlListDialog panel) {
             this.e = e;
             this.builder = builder;
-            this.show_list = show_list;
+            this.panel = panel;
         }
 
         @Override
         public void run() {
+            List<String> selectedList = panel.getSelectedList();
             builder.getDialogWrapper().close(0);
 
             if (e.getProject() == null) {
@@ -125,7 +140,7 @@ public class Action_GetUrl extends AnAction {
                 if (http_file.createNewFile()) {
                     BufferedWriter writer = new BufferedWriter(new FileWriter(http_file));
 
-                    writerToHttp(writer, show_list);
+                    writerToHttp(writer, selectedList);
 
                     writer.flush();
                     writer.close();

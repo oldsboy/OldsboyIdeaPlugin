@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.oldsboy.ideaplugin.panel.Panel_UrlListDialog">
+  <grid id="27dc6" binding="container" layout-manager="BorderLayout" hgap="10" vgap="10">
+    <constraints>
+      <xy x="20" y="20" width="800" height="800"/>
+    </constraints>
+    <properties>
+      <maximumSize width="800" height="800"/>
+      <minimumSize width="100" height="120"/>
+      <preferredSize width="500" height="400"/>
+      <requestFocusEnabled value="true"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="a652" binding="table_container" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="7f51d" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="3e56e" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints border-constraint="North"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="adfb3" class="javax.swing.JButton" binding="btn_all">
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="82" height="30"/>
+                      <minimumSize width="82" height="30"/>
+                      <preferredSize width="82" height="30"/>
+                      <text value="全选"/>
+                    </properties>
+                  </component>
+                  <component id="7d404" class="javax.swing.JButton" binding="btn_un_all" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text value="取消全选"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <scrollpane id="64205">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <preferredSize width="500" height="428"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="2cacf" class="javax.swing.JTable" binding="table1" default-binding="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <hspacer id="9ef8f">
+        <constraints border-constraint="West"/>
+      </hspacer>
+      <vspacer id="7c9d">
+        <constraints border-constraint="North"/>
+      </vspacer>
+      <grid id="68ce0" layout-manager="BorderLayout" hgap="10" vgap="10">
+        <constraints border-constraint="East"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="b2f3b" binding="config_container" layout-manager="BorderLayout" hgap="10" vgap="10">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <preferredSize width="200" height="400"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <grid id="9eb09" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <alignmentX value="0.0"/>
+                  <alignmentY value="0.0"/>
+                  <preferredSize width="200" height="32"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="727cd" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="2b490" layout-manager="FlowLayout" hgap="2" vgap="5" flow-align="0">
+                        <constraints border-constraint="North"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="507a4" class="javax.swing.JButton" binding="btn_config_add">
+                            <constraints/>
+                            <properties>
+                              <maximumSize width="60" height="30"/>
+                              <minimumSize width="60" height="30"/>
+                              <preferredSize width="60" height="30"/>
+                              <text value="增加"/>
+                            </properties>
+                          </component>
+                          <component id="bda10" class="javax.swing.JButton" binding="btn_config_delete">
+                            <constraints/>
+                            <properties>
+                              <maximumSize width="60" height="30"/>
+                              <minimumSize width="60" height="30"/>
+                              <preferredSize width="60" height="30"/>
+                              <text value="删除"/>
+                            </properties>
+                          </component>
+                          <component id="5c732" class="javax.swing.JButton" binding="btn_config_apply">
+                            <constraints/>
+                            <properties>
+                              <maximumSize width="60" height="30"/>
+                              <minimumSize width="60" height="30"/>
+                              <preferredSize width="60" height="30"/>
+                              <text value="应用"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <scrollpane id="de773">
+                        <constraints border-constraint="Center"/>
+                        <properties>
+                          <preferredSize width="500" height="428"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <component id="ecf67" class="javax.swing.JTable" binding="table2">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="27c9e" layout-manager="BorderLayout" hgap="0" vgap="200">
+                <constraints border-constraint="North"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="80ac2" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                    <constraints border-constraint="West"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="afbb2" class="javax.swing.JLabel">
+                        <constraints/>
+                        <properties>
+                          <text value="这里写配置"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="f77f3" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="South"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="c34a8" class="javax.swing.JLabel">
+                        <constraints border-constraint="South"/>
+                        <properties>
+                          <font/>
+                          <horizontalAlignment value="0"/>
+                          <text value="关键词黑名单"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <vspacer id="20ed7">
+                    <constraints border-constraint="Center"/>
+                  </vspacer>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <hspacer id="d2429">
+            <constraints border-constraint="East"/>
+          </hspacer>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
