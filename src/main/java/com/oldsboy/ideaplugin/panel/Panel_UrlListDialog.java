@@ -356,7 +356,7 @@ public class Panel_UrlListDialog {
                 try {
                     reader.close();
                 } catch (IOException ex) {
-                    Messages.showMessageDialog("关闭流", "tips", Messages.getErrorIcon());
+                    Messages.showMessageDialog("关闭流失败", "tips", Messages.getErrorIcon());
                     throw new RuntimeException(ex);
                 }
             }
