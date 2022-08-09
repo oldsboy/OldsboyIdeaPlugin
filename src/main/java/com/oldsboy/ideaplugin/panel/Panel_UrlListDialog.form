@@ -7,14 +7,16 @@
     <properties>
       <maximumSize width="800" height="800"/>
       <minimumSize width="100" height="120"/>
-      <preferredSize width="500" height="400"/>
+      <preferredSize width="500" height="500"/>
       <requestFocusEnabled value="true"/>
     </properties>
     <border type="none"/>
     <children>
       <grid id="a652" binding="table_container" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
-        <properties/>
+        <properties>
+          <preferredSize width="500" height="500"/>
+        </properties>
         <border type="none"/>
         <children>
           <grid id="7f51d" layout-manager="BorderLayout" hgap="0" vgap="0">
@@ -53,7 +55,9 @@
                 <children>
                   <component id="2cacf" class="javax.swing.JTable" binding="table1" default-binding="true">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <maximumSize width="2147483647" height="400000"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
@@ -72,20 +76,16 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="b2f3b" binding="config_container" layout-manager="BorderLayout" hgap="10" vgap="10">
+          <grid id="b2f3b" binding="config_container" layout-manager="BorderLayout" hgap="10" vgap="0">
             <constraints border-constraint="Center"/>
             <properties>
-              <preferredSize width="200" height="400"/>
+              <preferredSize width="200" height="500"/>
             </properties>
             <border type="none"/>
             <children>
               <grid id="9eb09" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints border-constraint="Center"/>
-                <properties>
-                  <alignmentX value="0.0"/>
-                  <alignmentY value="0.0"/>
-                  <preferredSize width="200" height="32"/>
-                </properties>
+                <properties/>
                 <border type="none"/>
                 <children>
                   <grid id="727cd" layout-manager="BorderLayout" hgap="0" vgap="0">
@@ -129,9 +129,7 @@
                       </grid>
                       <scrollpane id="de773">
                         <constraints border-constraint="Center"/>
-                        <properties>
-                          <preferredSize width="500" height="428"/>
-                        </properties>
+                        <properties/>
                         <border type="none"/>
                         <children>
                           <component id="ecf67" class="javax.swing.JTable" binding="table2">
@@ -144,22 +142,29 @@
                   </grid>
                 </children>
               </grid>
-              <grid id="27c9e" layout-manager="BorderLayout" hgap="0" vgap="200">
+              <grid id="27c9e" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints border-constraint="North"/>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="80ac2" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                  <grid id="80ac2" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints border-constraint="West"/>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="afbb2" class="javax.swing.JLabel">
-                        <constraints/>
+                      <scrollpane id="b7f59">
+                        <constraints border-constraint="Center"/>
                         <properties>
-                          <text value="这里写配置"/>
+                          <preferredSize width="200" height="140"/>
                         </properties>
-                      </component>
+                        <border type="none"/>
+                        <children>
+                          <component id="45fe4" class="javax.swing.JTable" binding="table3" default-binding="true">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
                     </children>
                   </grid>
                   <grid id="f77f3" layout-manager="BorderLayout" hgap="0" vgap="0">
@@ -180,6 +185,54 @@
                   <vspacer id="20ed7">
                     <constraints border-constraint="Center"/>
                   </vspacer>
+                  <grid id="cf86d" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="North"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="e7899" class="javax.swing.JLabel">
+                        <constraints border-constraint="Center"/>
+                        <properties>
+                          <horizontalAlignment value="0"/>
+                          <text value="自定义获取URL正则"/>
+                        </properties>
+                      </component>
+                      <grid id="1f834" layout-manager="FlowLayout" hgap="2" vgap="5" flow-align="0">
+                        <constraints border-constraint="South"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="8cc21" class="javax.swing.JButton" binding="btn_regex_add">
+                            <constraints/>
+                            <properties>
+                              <maximumSize width="60" height="30"/>
+                              <minimumSize width="60" height="30"/>
+                              <preferredSize width="60" height="30"/>
+                              <text value="增加"/>
+                            </properties>
+                          </component>
+                          <component id="9a52a" class="javax.swing.JButton" binding="btn_regex_delete">
+                            <constraints/>
+                            <properties>
+                              <maximumSize width="60" height="30"/>
+                              <minimumSize width="60" height="30"/>
+                              <preferredSize width="60" height="30"/>
+                              <text value="删除"/>
+                            </properties>
+                          </component>
+                          <component id="aefe5" class="javax.swing.JButton" binding="btn_regex_apply">
+                            <constraints/>
+                            <properties>
+                              <maximumSize width="60" height="30"/>
+                              <minimumSize width="60" height="30"/>
+                              <preferredSize width="60" height="30"/>
+                              <text value="应用"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
                 </children>
               </grid>
             </children>

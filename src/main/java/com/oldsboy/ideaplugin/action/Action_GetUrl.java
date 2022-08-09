@@ -27,33 +27,36 @@ public class Action_GetUrl extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        //  获取到当前编辑的文件
-        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        if (psiFile == null || psiFile.getVirtualFile() == null) {
-            Messages.showMessageDialog("未获取到正在编辑的文件", "tips", Messages.getErrorIcon());
-            return;
-        }
-
-        List<String> show_list = getRegexListFromFile(psiFile.getVirtualFile(), State.getInstance().getState().getBlack_list());
-
-        showListDialog(e, show_list);
-    }
-
-    private void showListDialog(AnActionEvent e, List<String> show_list) {
         DialogBuilder dialog = new DialogBuilder(e.getProject());
         dialog.setTitle("选择需要生成的URL");
         dialog.resizable(true);
 
+        List<String> black_list = State.getInstance().getState().getBlack_list();
         List<String> regex_list = State.getInstance().getState().getRegex_list();
-        Panel_UrlListDialog panel = new Panel_UrlListDialog(e, show_list, regex_list);
+        Panel_UrlListDialog panel = null;
+        try {
+            panel = new Panel_UrlListDialog(e, regex_list, black_list);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
         panel.setOnConfigListener(new Panel_UrlListDialog.OnConfigListener() {
             @Override
-            public void onDelete(List<String> result) {
+            public void onBlackDelete(List<String> result) {
+                State.getInstance().getState().setBlack_list(result);
+            }
+
+            @Override
+            public void onBlackAdd(List<String> result) {
+                State.getInstance().getState().setBlack_list(result);
+            }
+
+            @Override
+            public void onRegexDelete(List<String> result) {
                 State.getInstance().getState().setRegex_list(result);
             }
 
             @Override
-            public void onAdd(List<String> result) {
+            public void onRegexAdd(List<String> result) {
                 State.getInstance().getState().setRegex_list(result);
             }
         });
@@ -63,52 +66,6 @@ public class Action_GetUrl extends AnAction {
         dialog.show();
     }
 
-    /** @description 从文件中获取正则的字符串
-     * @param file 当前编辑的文件
-     * @param black_list 黑名单
-     * @return java.util.List<java.lang.String> 筛选出来的字符串(url)
-     * @author oldsboy; @date 2022-08-04 11:19 */
-    private List<String> getRegexListFromFile(VirtualFile file, List<String> black_list) {
-        List<String> show_list = new ArrayList<>();
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
-            while (reader.ready()) {
-                String line = reader.readLine();
-                if (StringUtil.isEmpty(line)) continue;
-
-                // TODO: 2022/8/3 此处的正则可以考虑让用户加入,以覆盖这个正则, 考虑做个配置界面以编辑黑名单列表和正则列表
-                Matcher matcher = Pattern.compile("\\w+/[(\\w+/)]+(\\?\\w+=\\w+[(\\&\\w+=\\w+)]+)?").matcher(line);
-                ring_2: while (matcher.find()) {
-                    String like_url = matcher.group();
-
-                    if (StringUtil.isEmpty(like_url)) continue ring_2;
-
-                    if(black_list != null) for (String black_str : black_list) {       //  遍历黑名单
-                        if (like_url.contains(black_str)) {
-                            continue ring_2;    //  跳到下一个like_url
-                        }
-                    }
-
-                    //  将这个像是url的字符串加入到展示列表
-                    show_list.add(like_url);
-                }
-            }
-        } catch (IOException ex) {
-            Messages.showMessageDialog("读取文件失败", "tips", Messages.getErrorIcon());
-            throw new RuntimeException(ex);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException ex) {
-                    Messages.showMessageDialog("关闭流", "tips", Messages.getErrorIcon());
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
-        return show_list;
-    }
 
     /** @description 根据传入的url_list生成http文件
      * @author oldsboy; @date 2022-08-04 11:49 */
