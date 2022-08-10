@@ -29,9 +29,10 @@ public class Action_GetUrl extends AnAction {
 
         List<String> black_list = State.getInstance().getState().getBlack_list();
         List<String> regex_list = State.getInstance().getState().getRegex_list();
+        boolean keep_self = State.getInstance().getState().isKeep_self();
         Panel_UrlListDialog panel = null;
         try {
-            panel = new Panel_UrlListDialog(e, regex_list, black_list);
+            panel = new Panel_UrlListDialog(e, regex_list, black_list, keep_self);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -54,6 +55,11 @@ public class Action_GetUrl extends AnAction {
             @Override
             public void onRegexAdd(List<String> result) {
                 State.getInstance().getState().setRegex_list(result);
+            }
+
+            @Override
+            public void onConfigKeepChange(boolean isKeep) {
+                State.getInstance().getState().setKeep_self(isKeep);
             }
         });
         dialog.setCenterPanel(panel.container);

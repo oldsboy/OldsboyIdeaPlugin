@@ -10,6 +10,8 @@ import com.oldsboy.ideaplugin.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,21 +40,30 @@ public class Panel_UrlListDialog {
     private JButton btn_regex_add;
     private JButton btn_regex_delete;
     private JButton btn_regex_apply;
+    private JCheckBox cb_regex_keep;
 
     private List<String> origin_list;
     private List<String> regex_list;
     private List<String> black_list;
     private AnActionEvent context;
     private OnConfigListener onConfigListener;
+    private boolean keep_self;
 
     public void setOnConfigListener(OnConfigListener onConfigListener) {
         this.onConfigListener = onConfigListener;
     }
 
-    public Panel_UrlListDialog(AnActionEvent context, List<String> regex_list, List<String> black_list) throws Exception {
+    /** @description
+     * @param context
+     * @param regex_list
+     * @param black_list
+     * @param keep_self 是否使用本体的正则
+     * @author oldsboy; @date 2022-08-09 15:50 */
+    public Panel_UrlListDialog(AnActionEvent context, List<String> regex_list, List<String> black_list, boolean keep_self) throws Exception {
         this.regex_list = regex_list;
         this.black_list = black_list;
         this.context = context;
+        this.keep_self = keep_self;
 
         //  首先将origin_list填充完成
         initOriginList(regex_list);
@@ -64,6 +75,27 @@ public class Panel_UrlListDialog {
         initRegexTable();
 
         initClickListener();
+
+        initCheckBox();
+    }
+
+    private void initCheckBox() {
+        cb_regex_keep.setSelected(keep_self);
+        cb_regex_keep.addActionListener(e -> {
+            keep_self = cb_regex_keep.isSelected();
+
+            try {
+                initOriginList(regex_list);
+                initUrlTable();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+
+            // TODO: 2022/8/9 将值保存起来
+            if (onConfigListener != null) {
+                onConfigListener.onConfigKeepChange(keep_self);
+            }
+        });
     }
 
     private void initOriginList(List<String> regex_list) throws Exception {
@@ -261,7 +293,7 @@ public class Panel_UrlListDialog {
     private void initUrlTable() {
         if (origin_list == null) origin_list = new ArrayList<>();
 
-        StringTableMode stringTableMode = new StringTableMode(origin_list, "url", true, black_list);
+        StringTableMode stringTableMode = new StringTableMode(origin_list, "url_list", true, black_list);
         table1.setModel(stringTableMode);
         table1.setRowHeight(30);
         table1.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
@@ -271,7 +303,7 @@ public class Panel_UrlListDialog {
     private void initBlackTable() {
         if (black_list == null) black_list = new ArrayList<>();
 
-        StringTableMode stringTableMode = new StringTableMode(black_list, "key", false, null){
+        StringTableMode stringTableMode = new StringTableMode(black_list, "black_list", false, null){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -285,7 +317,7 @@ public class Panel_UrlListDialog {
     private void initRegexTable() {
         if (regex_list == null) regex_list = new ArrayList<>();
 
-        StringTableMode stringTableMode = new StringTableMode(regex_list, "regex", false, null){
+        StringTableMode stringTableMode = new StringTableMode(regex_list, "regex_list", false, null){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -308,7 +340,7 @@ public class Panel_UrlListDialog {
     /** @description 
      * @param inputStream 文件流
      * @return java.util.List<java.lang.String> 自定义正则
-     * @description 从文件中获取正则的字符串
+     * @description 从文件中获取正则的字符串,增加判定,如果有自定义的就把本来的保底屏蔽了
      * @author oldsboy; @date 2022-08-04 11:19 */
     private List<String> getRegexListFromFile(@NotNull InputStream inputStream, List<String> regex_list) {
         List<String> show_list = new ArrayList<>();
@@ -319,15 +351,18 @@ public class Panel_UrlListDialog {
                 String line = reader.readLine();
                 if (StringUtil.isEmpty(line)) continue;
 
-                Matcher matcher = Pattern.compile("\\w+/[(\\w+/)]+(\\?\\w+=\\w+[(\\&\\w+=\\w+)]+)?").matcher(line);
-                while (matcher.find()) {
-                    String like_url = matcher.group();
+                if (keep_self) {
+                    Matcher matcher = Pattern.compile("\\w+/[(\\w+/)]+([(\\?\\w+=\\&\\$\\{\\.\\}\\!)]+)?").matcher(line);
+                    while (matcher.find()) {
+                        String like_url = matcher.group();
 
-                    if (StringUtil.isEmpty(like_url)) continue;
+                        if (StringUtil.isEmpty(like_url)) continue;
 
-                    //  将这个像是url的字符串加入到展示列表
-                    show_list.add(like_url);
+                        //  将这个像是url的字符串加入到展示列表
+                        show_list.add(like_url);
+                    }
                 }
+
 
                 for (String regex : regex_list) {
                     Matcher matcher2 = Pattern.compile(regex).matcher(line);
@@ -369,5 +404,6 @@ public class Panel_UrlListDialog {
         void onBlackAdd(List<String> result);
         void onRegexDelete(List<String> result);
         void onRegexAdd(List<String> result);
+        void onConfigKeepChange(boolean isKeep);
     }
 }

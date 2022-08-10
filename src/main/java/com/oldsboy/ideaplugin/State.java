@@ -21,6 +21,7 @@ public class State implements PersistentStateComponent<Config> {
             this.config = new Config();
             this.config.setRegex_list(new ArrayList<>());
             this.config.setBlack_list(new ArrayList<>());
+            this.config.setKeep_self(true);
         }
         return this.config;
     }

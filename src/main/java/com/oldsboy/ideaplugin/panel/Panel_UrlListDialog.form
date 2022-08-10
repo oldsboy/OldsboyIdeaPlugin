@@ -7,7 +7,7 @@
     <properties>
       <maximumSize width="800" height="800"/>
       <minimumSize width="100" height="120"/>
-      <preferredSize width="500" height="500"/>
+      <preferredSize width="800" height="500"/>
       <requestFocusEnabled value="true"/>
     </properties>
     <border type="none"/>
@@ -178,6 +178,7 @@
                           <font/>
                           <horizontalAlignment value="0"/>
                           <text value="关键词黑名单"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                     </children>
@@ -195,6 +196,7 @@
                         <properties>
                           <horizontalAlignment value="0"/>
                           <text value="自定义获取URL正则"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <grid id="1f834" layout-manager="FlowLayout" hgap="2" vgap="5" flow-align="0">
@@ -231,6 +233,13 @@
                           </component>
                         </children>
                       </grid>
+                      <component id="a59e5" class="javax.swing.JCheckBox" binding="cb_regex_keep">
+                        <constraints border-constraint="North"/>
+                        <properties>
+                          <horizontalAlignment value="2"/>
+                          <text value="使用自带的正则过滤"/>
+                        </properties>
+                      </component>
                     </children>
                   </grid>
                 </children>
