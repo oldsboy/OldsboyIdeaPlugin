@@ -55,7 +55,6 @@ public class Action_DuplicateAdd1 extends AnAction {
             int startOffset = document.getLineStartOffset(line);
             int endOffset = document.getLineEndOffset(line);
             String textFromLine = document.getText(new TextRange(startOffset, endOffset));
-            System.out.println(textFromLine);
 
             selectedText = "\n"+textFromLine;
         }
