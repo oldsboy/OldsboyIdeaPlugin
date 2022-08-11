@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.oldsboy"
-version = "0.04-release"
+version = "0.05-release"
 
 repositories {
     mavenCentral()

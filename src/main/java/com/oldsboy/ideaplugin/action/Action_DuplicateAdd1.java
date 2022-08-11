@@ -66,9 +66,11 @@ public class Action_DuplicateAdd1 extends AnAction {
         primaryCaret.setSelection(end, end+selectedText1.length(), true);
     }
 
-    private String add1(String text) {
+    private static String add1(String origin_text) {
         Pattern pattern = Pattern.compile("[\\d+\\.]+");
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = pattern.matcher(origin_text);
+        StringBuilder stringBuilder = new StringBuilder();
+        int last_end = 0;
         while (matcher.find()) {
             String dd = matcher.group();
             String ddn = "";
@@ -79,9 +81,18 @@ public class Action_DuplicateAdd1 extends AnAction {
             }else {
                 ddn = String.valueOf((Integer.parseInt(dd) + 1));
             }
+            int start = origin_text.substring(last_end).indexOf(dd);
+            int end = start + last_end + dd.length();
 
-            text = text.replace(dd, ddn);
+            String sp = origin_text.substring(last_end, end);
+            stringBuilder.append(sp.replaceFirst(dd, ddn));
+            last_end = end;
         }
-        return text;
+
+        if (last_end < origin_text.length()) {
+            stringBuilder.append(origin_text.substring(last_end));
+        }
+
+        return stringBuilder.toString();
     }
 }
