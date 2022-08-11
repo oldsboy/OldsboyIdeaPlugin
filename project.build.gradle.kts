@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.5.2"
+    id("org.jetbrains.intellij") version "1.8.0"
 }
 
 group = "com.oldsboy"
@@ -16,6 +16,11 @@ intellij {
     type.set("IC") // Target IDE Platform
 
     plugins.set(listOf(/* Plugin Dependencies */))
+
+}
+
+dependencies {
+//    implementation("")
 }
 
 tasks {
@@ -38,5 +43,9 @@ tasks {
 
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
+    }
+
+    runIde{
+        autoReloadPlugins.set(true)
     }
 }

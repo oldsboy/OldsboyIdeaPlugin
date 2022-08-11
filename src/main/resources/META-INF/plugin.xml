@@ -28,11 +28,13 @@
     <actions>
         <group id="group1" text="自定义工具包">
             <add-to-group group-id="MainMenu" />
-            <action id="get_url_menu" class="com.oldsboy.ideaplugin.action.Action_GetUrl" text="获取到页面内所有请求" description="获取到页面内所有请求" />
-            <action id="duplicate_add_1" class="com.oldsboy.ideaplugin.action.Action_DuplicateAdd1" text="复制行并加1" description="复制行并加1" />
+            <action id="duplicate_add_1" class="com.oldsboy.ideaplugin.action.Action_DuplicateAdd1" text="复制行并加1" description="复制行并加1" >
+                <add-to-group group-id="EditorPopupMenu" anchor="last" />
+                <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt D"/>
+            </action>
+            <action id="get_url" class="com.oldsboy.ideaplugin.action.Action_GetUrl" text="获取到页面内所有请求" description="获取到页面内所有请求">
+                <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="ReplaceInPath"/>
+            </action>
         </group>
-        <action id="get_url" class="com.oldsboy.ideaplugin.action.Action_GetUrl" text="获取到页面内所有请求" description="获取到页面内所有请求">
-            <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="ReplaceInPath"/>
-        </action>
     </actions>
 </idea-plugin>
