@@ -39,16 +39,20 @@ public class Action_DuplicateAdd1 extends AnAction {
             com.intellij.openapi.ui.Messages.showMessageDialog("没有获取到Editor", "tips", Messages.getInformationIcon());
             return;
         }
+
+        if (project == null || editor == null) {
+            return;
+        }
+
         Document document = editor.getDocument();
 
         Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
         int start = primaryCaret.getSelectionStart();
         int end = primaryCaret.getSelectionEnd();
         String selectedText = primaryCaret.getSelectedText();
+        CaretModel caretModel = primaryCaret.getCaretModel();
 
         if (StringUtil.isEmpty(selectedText)) { //  没有选择的文本则将整行的文本作为选择的文本
-            primaryCaret.getVisualLineStart();
-            CaretModel caretModel = primaryCaret.getCaretModel();
             LogicalPosition logicalPosition = caretModel.getLogicalPosition();
 
             int line = logicalPosition.line;
@@ -57,26 +61,39 @@ public class Action_DuplicateAdd1 extends AnAction {
             String textFromLine = document.getText(new TextRange(startOffset, endOffset));
 
             selectedText = "\n"+textFromLine;
+
+            end = endOffset;
         }
 
         String selectedText1 = add1(selectedText);
 
-        WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(end, selectedText1));
+        int finalEnd = end;
+        WriteCommandAction.runWriteCommandAction(project, () -> {
+            document.insertString(finalEnd, selectedText1);
+            primaryCaret.setSelection(finalEnd, finalEnd+selectedText1.length(), true);
+            caretModel.moveToOffset(finalEnd+selectedText1.length());
+        });
 
-        primaryCaret.setSelection(end, end+selectedText1.length(), true);
+
     }
 
     private static String add1(String origin_text) {
-        Pattern pattern = Pattern.compile("[\\d+\\.]+");
+        Pattern pattern = Pattern.compile("[\\d\\.]+");
         Matcher matcher = pattern.matcher(origin_text);
         StringBuilder stringBuilder = new StringBuilder();
         int last_end = 0;
         while (matcher.find()) {
             String dd = matcher.group();
             String ddn = "";
+            if (dd.equals(".")) continue;
             if (dd.contains(".")) { //  浮点类型的增加
                 int pointAfter = dd.split("\\.")[1].length();
-                double result = new BigDecimal(dd).add(new BigDecimal(1)).setScale(pointAfter).doubleValue();
+                String addnum = "0.";
+                for (int i = 0; i < pointAfter - 1; i++) {
+                    addnum+="0";
+                }
+                addnum+="1";
+                double result = new BigDecimal(dd).add(new BigDecimal(addnum)).setScale(pointAfter).doubleValue();
                 ddn = String.valueOf(result);
             }else {
                 ddn = String.valueOf((Integer.parseInt(dd) + 1));
